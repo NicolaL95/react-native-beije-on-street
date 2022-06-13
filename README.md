@@ -16,3 +16,6 @@ npm install --save @react-navigation/native-stack
 
 <!-- Signature Canvas -->
 npm install --save react-native-signature-canvas
+
+<!-- EVENT -->
+npm install events

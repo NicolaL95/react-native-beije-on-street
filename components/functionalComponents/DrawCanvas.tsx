@@ -1,15 +1,49 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
-import SignatureScreen from 'react-native-signature-canvas';
+import SignatureScreen, {
+    SignatureViewRef,
+} from "react-native-signature-canvas";
+import { eventOn } from '../../-/utils/eventEmitter';
 
+interface State {
+    drawingMode: boolean
+}
 
+const initialState = {
+    drawingMode: true
+}
 
-const DrawCanvas: FC = () => {
+const DrawCanvas: FC = (props: any) => {
 
+    const [state, setState] = useState<State>(initialState);
 
+    const ref = useRef<SignatureViewRef>(null)
 
-    const ref = useRef(null);
+    eventOn("handleSignatureOperation", ({ eventName, color }: { eventName: string, color: string }): void => {
 
+        switch (eventName) {
+            case "undo":
+                ref.current?.undo();
+                break;
+            case "redo":
+                ref.current?.redo();
+                break;
+            case "clear":
+                ref.current?.clearSignature();
+                break;
+            case "color":
+                console.log(color)
+                break;
+            case "draw":
+                ref.current?.draw();
+                break;
+            case "erase":
+                ref.current?.erase();
+                break;
+            default:
+                return;
+        }
+    })
     const imgWidth = Dimensions.get('window').width;
     const imgHeight = Dimensions.get('window').height - 200;
     const style = `.m-signature-pad {box-shadow: none; border: none; } 

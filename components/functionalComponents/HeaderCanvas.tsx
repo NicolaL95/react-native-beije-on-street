@@ -1,15 +1,8 @@
 import React, { FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
+import { eventEmit } from '../../-/utils/eventEmitter'
 import style from '../../styles/styledrawpage'
 const Tutorial: FC = (props: any) => {
-
-    /* const handleUndo = (): void => {
-        props.callback.undoFunc();
-    }
-
-    const handleRedo = (): void => {
-        props.callback.redoFunc();
-    } */
 
     return (
         <View style={style.bar}>
@@ -28,17 +21,34 @@ const Tutorial: FC = (props: any) => {
             <View style={style.barRow}>
                 <View>
                     <Pressable
-                        /* onPress={handleUndo} */
-                        onPress={() => {
 
+                        onPress={() => {
+                            eventEmit("handleSignatureOperation", {
+                                eventName: "undo"
+                            })
                         }}>
                         <Text>Undo</Text>
                     </Pressable>
                 </View>
                 <View>
                     <Pressable
-                        /* onPress={handleRedo} */>
+                        onPress={() => {
+                            eventEmit("handleSignatureOperation", {
+                                eventName: "redo"
+                            })
+                        }}
+                    >
                         <Text>Redo</Text>
+                    </Pressable>
+                </View>
+                <View>
+                    <Pressable
+                        onPress={() => {
+                            eventEmit("handleSignatureOperation", {
+                                eventName: "clear"
+                            })
+                        }}>
+                        <Text>Clear</Text>
                     </Pressable>
                 </View>
                 <View>
