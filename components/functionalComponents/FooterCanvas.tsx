@@ -1,7 +1,9 @@
 import React, { FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
 import style from '../../styles/styledrawpage'
+import ColorWheel from '../hookComponents/ColorWheel'
 const Tutorial: FC = () => {
+
     return (
         <View style={style.bar}>
             <View style={style.barRow}>
@@ -18,9 +20,7 @@ const Tutorial: FC = () => {
             </View>
             <View style={style.barRow}>
                 <View>
-                    <Pressable>
-                        <Text>Color Picker</Text>
-                    </Pressable>
+                    <ColorWheel />
                 </View>
             </View>
         </View>
