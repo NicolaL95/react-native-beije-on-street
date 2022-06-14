@@ -1,13 +1,13 @@
 import React, { FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
-import style from '../../styles/styledrawpage'
-import ColorWheel from '../hookComponents/ColorWheel'
-import { eventEmit } from '../../-/utils/eventEmitter'
+import ColorWheelModal from '../hookComponents/ColorWheelModal'
+import { eventEmit } from '../../utils/eventEmitter'
+import style from '../../styles/screens/styledrawpage'
 
-const Tutorial: FC = () => {
+const FooterCanvas: FC = () => {
 
     return (
-        <View style={style.bar}>
+        <View style={[style.bar, style.barFooter]}>
             <View style={style.barRow}>
                 <View>
                     <Pressable
@@ -32,10 +32,10 @@ const Tutorial: FC = () => {
             </View>
             <View style={style.barRow}>
                 <View>
-                    <ColorWheel />
+                    <ColorWheelModal />
                 </View>
             </View>
         </View>
     )
 }
-export default Tutorial
+export default FooterCanvas

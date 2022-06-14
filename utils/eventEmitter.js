@@ -6,7 +6,6 @@ const eventOn = (eventName, eventFunction) => {
     ee.on(eventName, eventFunction)
 }
 
-
 const eventEmit = (eventName, obj) => {
     ee.emit(eventName, obj)
 }

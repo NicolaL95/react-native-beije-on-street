@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
-import { eventEmit } from '../../-/utils/eventEmitter'
-import style from '../../styles/styledrawpage'
-const Tutorial: FC = (props: any) => {
+import { eventEmit } from '../../utils/eventEmitter'
+import style from '../../styles/screens/styledrawpage'
+
+const HeaderCanvas: FC = (props: any) => {
 
     return (
-        <View style={style.bar}>
+        <View style={[style.bar, style.barHeader]}>
             <View style={style.barRow}>
                 <View>
                     <Pressable>
@@ -60,4 +61,4 @@ const Tutorial: FC = (props: any) => {
         </View>
     )
 }
-export default Tutorial
+export default HeaderCanvas
