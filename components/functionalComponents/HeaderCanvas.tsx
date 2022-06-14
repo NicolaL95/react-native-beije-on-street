@@ -1,19 +1,31 @@
 import React, { FC } from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, ToastAndroid, Dimensions } from 'react-native'
 import { eventEmit } from '../../-/utils/eventEmitter'
 import style from '../../styles/styledrawpage'
-const Tutorial: FC = (props: any) => {
+import { Camera, CameraType } from 'expo-camera';
 
+
+const Tutorial: FC = (props: any) => {
+    const handleCallback = (name: string): void => {
+        props.callback[name]()
+    }
     return (
         <View style={style.bar}>
+
             <View style={style.barRow}>
                 <View>
-                    <Pressable>
+                    <Pressable
+                        onPress={() => {
+                            handleCallback('handleGalleryComponent')
+                        }}>
                         <Text>Gallery</Text>
                     </Pressable>
                 </View>
                 <View>
-                    <Pressable>
+                    <Pressable
+                        onPress={() => {
+                            handleCallback('handlePhotoComponent')
+                        }}>
                         <Text>Fotocamera</Text>
                     </Pressable>
                 </View>
@@ -21,7 +33,6 @@ const Tutorial: FC = (props: any) => {
             <View style={style.barRow}>
                 <View>
                     <Pressable
-
                         onPress={() => {
                             eventEmit("handleSignatureOperation", {
                                 eventName: "undo"

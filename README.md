@@ -19,3 +19,6 @@ npm install --save react-native-signature-canvas
 
 <!-- EVENT -->
 npm install events
+
+<!-- CAMERA -->
+expo install expo-camera
