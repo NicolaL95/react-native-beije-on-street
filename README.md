@@ -21,3 +21,6 @@ npm install --save react-native-signature-canvas
 npm install --save react-native-wheel-color-picker
 <!-- EVENT -->
 npm install events
+
+<!-- CAMERA -->
+expo install expo-camera

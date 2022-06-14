@@ -1,20 +1,30 @@
 import React, { FC } from 'react'
-import { View, Text, Pressable } from 'react-native'
-import { eventEmit } from '../../utils/eventEmitter'
+import { View, Text, Pressable, ToastAndroid, Dimensions } from 'react-native'
+import { eventEmit } from '../..//utils/eventEmitter'
 import style from '../../styles/screens/styledrawpage'
+import { Camera, CameraType } from 'expo-camera';
+
 
 const HeaderCanvas: FC = (props: any) => {
-
+    const handleCallback = (name: string): void => {
+        props.callback[name]()
+    }
     return (
         <View style={[style.bar, style.barHeader]}>
             <View style={style.barRow}>
                 <View>
-                    <Pressable>
+                    <Pressable
+                        onPress={() => {
+                            handleCallback('handleGalleryComponent')
+                        }}>
                         <Text>Gallery</Text>
                     </Pressable>
                 </View>
                 <View>
-                    <Pressable>
+                    <Pressable
+                        onPress={() => {
+                            handleCallback('handlePhotoComponent')
+                        }}>
                         <Text>Fotocamera</Text>
                     </Pressable>
                 </View>
@@ -22,7 +32,6 @@ const HeaderCanvas: FC = (props: any) => {
             <View style={style.barRow}>
                 <View>
                     <Pressable
-
                         onPress={() => {
                             eventEmit("handleSignatureOperation", {
                                 eventName: "undo"
