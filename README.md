@@ -19,3 +19,5 @@ npm install --save react-native-signature-canvas
 
 <!-- Color picker -->
 npm install --save react-native-wheel-color-picker
+<!-- EVENT -->
+npm install events
