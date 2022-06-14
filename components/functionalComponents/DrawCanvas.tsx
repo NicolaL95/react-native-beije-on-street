@@ -1,16 +1,18 @@
 import React, { FC, useRef, useState } from 'react'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import SignatureScreen, {
     SignatureViewRef,
 } from "react-native-signature-canvas";
-import { eventOn } from '../../-/utils/eventEmitter';
+import styleDrawCanvas from '../../styles/components/styleDrawCanvas';
+import { fixedDimensions } from '../../styles/globalStyleVariables';
+import { eventOn } from '../../utils/eventEmitter';
 
 interface State {
-    drawingMode: boolean
+    drawingEnabled: boolean
 }
 
 const initialState = {
-    drawingMode: true
+    drawingEnabled: true
 }
 
 const DrawCanvas: FC = (props: any) => {
@@ -18,6 +20,16 @@ const DrawCanvas: FC = (props: any) => {
     const [state, setState] = useState<State>(initialState);
 
     const ref = useRef<SignatureViewRef>(null)
+
+    const disableCanvas = (isEnabled: boolean): void => {
+        setState({
+            ...state,
+            drawingEnabled: isEnabled,
+        })
+    }
+
+    //called when colorPicker modal triggers
+    eventOn("onHandleCanvas", disableCanvas)
 
     eventOn("handleSignatureOperation", ({ eventName, color }: { eventName: string, color: string }): void => {
 
@@ -44,15 +56,25 @@ const DrawCanvas: FC = (props: any) => {
                 return;
         }
     })
+
+
     const imgWidth = Dimensions.get('window').width;
-    const imgHeight = Dimensions.get('window').height - 200;
-    const style = `.m-signature-pad {box-shadow: none; border: none; } 
+    const imgHeight = Dimensions.get('window').height;
+
+    const style = `.m-signature-pad { box-shadow: none; border: none; } 
               .m-signature-pad--body {border: none;}
               .m-signature-pad--footer {display: none; margin: 0px;}
               body,html {
-              width: ${imgWidth}px; height: ${imgHeight}px;}`;
+              width: 100%; height: 100%}`;
+
     return (
-        <View style={{ height: imgHeight, width: '100%' }}>
+        <View style={{ width: '100%', flexGrow: 1 }}>
+
+            {!state.drawingEnabled &&
+                <View style={styleDrawCanvas.canvasBlock}>
+                </View>
+            }
+
             <SignatureScreen
                 ref={ref}
                 bgSrc="https://via.placeholder.com/300x200/ff726b"
@@ -60,7 +82,7 @@ const DrawCanvas: FC = (props: any) => {
                 bgHeight={imgHeight}
                 webStyle={style}
             />
-        </View>
+        </View >
     )
 }
 

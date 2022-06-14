@@ -9,7 +9,7 @@ const DrawPage: FC = () => {
 
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <HeaderCanvas
             />
             <DrawCanvas
