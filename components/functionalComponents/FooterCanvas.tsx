@@ -45,45 +45,37 @@ const FooterCanvas: FC<FooterCanvasProps> = (props) => {
             <View style={style.barRow}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 20 }}>
                     <Pressable
-                        style={{ marginHorizontal: 5 }}
+                        style={{
+                            marginHorizontal: 5,
+                            width: fixedDimensions.brushRadius.small,
+                            height: fixedDimensions.brushRadius.small,
+                            backgroundColor: 'black',
+                            borderRadius: 50,
+                        }}
                         onPress={setBrushWidth(fixedDimensions.brushRadius.small)}
-                        hitSlop={20}
-                    >
-                        <View
-                            style={{
-                                width: fixedDimensions.brushRadius.small,
-                                height: fixedDimensions.brushRadius.small,
-                                backgroundColor: 'black',
-                                borderRadius: 50,
-                            }}
-                        />
-                    </Pressable>
+                        hitSlop={50}
+                    />
                     <Pressable
-                        style={{ marginHorizontal: 5 }}
+                        style={{
+                            marginHorizontal: 5,
+                            width: fixedDimensions.brushRadius.medium,
+                            height: fixedDimensions.brushRadius.medium,
+                            backgroundColor: 'black',
+                            borderRadius: 50,
+                        }}
                         onPress={setBrushWidth(fixedDimensions.brushRadius.medium)}
-                    >
-                        <View
-                            style={{
-                                width: fixedDimensions.brushRadius.medium,
-                                height: fixedDimensions.brushRadius.medium,
-                                backgroundColor: 'black',
-                                borderRadius: 50,
-                            }}
-                        />
-                    </Pressable>
+                    />
+
                     <Pressable
-                        style={{ marginHorizontal: 5 }}
+                        style={{
+                            marginHorizontal: 5,
+                            width: fixedDimensions.brushRadius.large,
+                            height: fixedDimensions.brushRadius.large,
+                            backgroundColor: 'black',
+                            borderRadius: 50,
+                        }}
                         onPress={setBrushWidth(fixedDimensions.brushRadius.large)}
-                    >
-                        <View
-                            style={{
-                                width: fixedDimensions.brushRadius.large,
-                                height: fixedDimensions.brushRadius.large,
-                                backgroundColor: 'black',
-                                borderRadius: 50,
-                            }}
-                        />
-                    </Pressable>
+                    />
                 </View>
                 <View >
                     <ColorWheel />

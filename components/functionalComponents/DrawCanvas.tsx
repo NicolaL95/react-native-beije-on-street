@@ -61,9 +61,9 @@ const DrawCanvas: FC = (props: any) => {
         })
     }
 
-    const handlePenColorChange = (newColor: string) => { ref.current?.changePenColor(newColor) }
+    const handlePenColorChange = (newColor: string): void => { ref.current?.changePenColor(newColor) }
 
-    const onBlurColorPicker = () => {
+    const onBlurColorPicker = (): void => {
         const isEnabled = true
         //on overlay touch, close colorPicker modal
         eventEmit('onBlurColorPicker', isEnabled)
@@ -74,8 +74,13 @@ const DrawCanvas: FC = (props: any) => {
         })
     }
 
+    const changeBrushWidth = (newBrushWidth: number): void => {
+        ref.current?.changePenSize(newBrushWidth - 5, newBrushWidth)
+    }
+
     useEffect(() => {
-        eventOn("handleDrawSave", () => {
+        eventOn("onChangeBrushWidth", changeBrushWidth)
+        eventOn("handleDrawSave", (): void => {
             ref.current?.readSignature();
         })
         eventOn("onColorModalTrigger", blockCanvas)
