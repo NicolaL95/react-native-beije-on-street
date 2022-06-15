@@ -8,13 +8,18 @@ import * as ImagePicker from 'expo-image-picker';
 import { getExtensionFromUrl } from '../utils/functionDrawTable'
 
 
+interface Result {
+    url: string | undefined,
+    extension: string | undefined
+}
+
 interface State {
     cameraPermission: boolean | null,
     galleryPermission: boolean | null,
     cameraIsActive: boolean,
     galleryIsActive: boolean,
     type: CameraType,
-    resultImgPicker: string | null
+    resultImgPicker: Result | null
 
 }
 
@@ -48,7 +53,7 @@ const DrawPage: FC = () => {
     const handleGalleryComponent = async (): Promise<void> => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         let galleryPermissionTmp = false;
-        let resultTmp: string | null = null
+        let resultTmp: Result | null = null
         if (status === "granted") {
             let result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -79,7 +84,7 @@ const DrawPage: FC = () => {
             quality: 0.5,
             // base64: true,
         }
-        const photo: CameraCapturedPicture = await camera?.takePictureAsync(options);
+        const photo: CameraCapturedPicture | undefined = await camera?.takePictureAsync(options);
         console.log('photo', photo)
     }
 

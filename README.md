@@ -27,3 +27,6 @@ expo install expo-camera
 
 <!-- Screenshot -->
 expo install react-native-view-shot
+
+<!-- MEDIA LIBRARY -->
+expo install expo-media-library
