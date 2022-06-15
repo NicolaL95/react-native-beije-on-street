@@ -5,6 +5,8 @@ import HeaderCanvas from '../components/functionalComponents/HeaderCanvas'
 import FooterCanvas from '../components/functionalComponents/FooterCanvas'
 import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
+import { getExtensionFromUrl } from '../utils/functionDrawTable'
+
 
 interface State {
     cameraPermission: boolean | null,
@@ -50,12 +52,16 @@ const DrawPage: FC = () => {
         if (status === "granted") {
             let result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
-                allowsEditing: true,
+                allowsEditing: false,
                 aspect: [4, 3],
-                quality: 1,
+                quality: 0.5,
+                base64: true
             });
             if (!result.cancelled) {
-                resultTmp = result.uri
+                resultTmp = {
+                    url: result.base64,
+                    extension: getExtensionFromUrl(result.uri)
+                }
             }
         }
 
@@ -128,6 +134,7 @@ const DrawPage: FC = () => {
                 }}
             />
             <DrawCanvas
+                imgChoosen={state.resultImgPicker}
             />
             <FooterCanvas />
         </View>

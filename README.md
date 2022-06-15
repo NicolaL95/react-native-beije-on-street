@@ -24,3 +24,6 @@ npm install events
 
 <!-- CAMERA -->
 expo install expo-camera
+
+<!-- Screenshot -->
+expo install react-native-view-shot
