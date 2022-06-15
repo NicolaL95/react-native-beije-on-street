@@ -1,9 +1,10 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Dimensions, Pressable, Text, View } from "react-native";
 
 import ColorPicker from "react-native-wheel-color-picker";
 import styleColorWheelModal from "../../styles/components/styleColorWheelModal";
-import { eventEmit } from "../../utils/eventEmitter";
+import { colorPalette } from "../../styles/globalStyleVariables";
+import { eventEmit, eventOn } from "../../utils/eventEmitter";
 // import { eventEmit } from "../../utils/eventEmitter";
 
 interface initialState {
@@ -11,20 +12,30 @@ interface initialState {
     isWheelOpen: boolean
 }
 const initialState = {
-    currentColor: '#ffffff',
+    currentColor: colorPalette.primary,
     isWheelOpen: false,
 }
 
 const ColorWheelModal: FC = (props) => {
 
     const [state, setState] = useState(initialState)
-    // const picker = useRef(null)
 
-    const handleColorPicker = (): void => {
-        console.log('open color wheel');
+    const setNewColor = (color: string): void => {
+        if (color === state.currentColor) {
+            return
+        }
 
-        // enable/disable canvas overlay
-        eventEmit('onHandleCanvas', state.isWheelOpen)
+        eventEmit('onSetNewColor', color)
+
+        setState({
+            ...state,
+            currentColor: color
+        })
+    }
+
+    const handleColorModal = (): void => {
+
+        eventEmit('onColorModalTrigger', state.isWheelOpen)
 
         setState({
             ...state,
@@ -32,15 +43,29 @@ const ColorWheelModal: FC = (props) => {
         })
     }
 
+    const onBlurPickerCallback = (drawingEnabled: boolean): void => {
+        setState({ ...state, isWheelOpen: !drawingEnabled })
+    }
+
+    useEffect(() => {
+        eventOn("onBlurColorPicker", onBlurPickerCallback)
+    }, [state.currentColor])
+
     return (
-        <Pressable
-            style={{ position: "relative", zIndex: 999 }}
-            onPress={handleColorPicker}
-        >
+        <>
+            <Pressable
+                style={{ position: "relative", zIndex: 999 }}
+                onPress={handleColorModal}
+            >
 
-            <View style={[styleColorWheelModal.colorButton, { backgroundColor: state.currentColor }]}></View>
+                <View
+                    style={[
+                        styleColorWheelModal.colorButton,
+                        { backgroundColor: state.currentColor }
+                    ]}
+                />
 
-
+            </Pressable>
 
             {state.isWheelOpen &&
                 <View
@@ -48,33 +73,15 @@ const ColorWheelModal: FC = (props) => {
                 >
 
                     <ColorPicker
-                        // ref={picker.current}
-                        // noSnap={true}
-                        // discrete={true}
-                        // shadeWheelThumb={true}
-                        // swatches={false}
-                        // sliderHidden={false}
                         palette={['#57ff0a', '#ffde17', '#f26522']}
-                        onColorChangeComplete={(color) => {
-                            setState({
-                                ...state,
-                                currentColor: color
-                            })
-                        }}
+                        onColorChangeComplete={setNewColor}
                         gapSize={20}
                         thumbSize={25}
                         color={state.currentColor}
-                    /* onColorChange={color => {
-                        console.log('color changing...', color);
-                        setState({
-                            ...state,
-                            current: color,
-                        })
-                    }} */
                     />
                 </View>
             }
-        </Pressable>
+        </>
 
     )
 }
