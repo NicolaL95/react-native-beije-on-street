@@ -5,9 +5,9 @@ export default StyleSheet.create({
         position: 'absolute',
         top: 0,
         zIndex: 9,
-        backgroundColor: 'blue',
+        backgroundColor: 'white',
         width: '100%',
         height: '100%',
-        opacity: 0.5
+        opacity: 0.1
     }
 })

@@ -1,18 +1,24 @@
-import React, { FC, useRef, useState } from 'react'
-import { View, Dimensions } from 'react-native'
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { View, Dimensions, Pressable } from 'react-native'
 import SignatureScreen, {
     SignatureViewRef,
 } from "react-native-signature-canvas";
 import styleDrawCanvas from '../../styles/components/styleDrawCanvas';
-import { fixedDimensions } from '../../styles/globalStyleVariables';
-import { eventOn } from '../../utils/eventEmitter';
+import { colorPalette, fixedDimensions } from '../../styles/globalStyleVariables';
+import { eventEmit, eventOn } from '../../utils/eventEmitter';
 
+interface disableCanvasPayload {
+    color: string
+    canvasBlocker: boolean
+}
 interface State {
     drawingEnabled: boolean
+    penColor: string
 }
 
 const initialState = {
-    drawingEnabled: true
+    drawingEnabled: true,
+    penColor: colorPalette.primary
 }
 
 const DrawCanvas: FC = (props: any) => {
@@ -21,41 +27,58 @@ const DrawCanvas: FC = (props: any) => {
 
     const ref = useRef<SignatureViewRef>(null)
 
-    const disableCanvas = (isEnabled: boolean): void => {
+    const blockCanvas = (isWheelOpen: boolean): void => {
         setState({
             ...state,
-            drawingEnabled: isEnabled,
+            drawingEnabled: isWheelOpen,
         })
     }
 
-    //called when colorPicker modal triggers
-    eventOn("onHandleCanvas", disableCanvas)
+    const handlePenColorChange = (newColor: string) => { ref.current?.changePenColor(newColor) }
 
-    eventOn("handleSignatureOperation", ({ eventName, color }: { eventName: string, color: string }): void => {
+    const onBlurColorPicker = () => {
+        const isEnabled = true
+        //on overlay touch, close colorPicker modal
+        eventEmit('onBlurColorPicker', isEnabled)
 
-        switch (eventName) {
-            case "undo":
-                ref.current?.undo();
-                break;
-            case "redo":
-                ref.current?.redo();
-                break;
-            case "clear":
-                ref.current?.clearSignature();
-                break;
-            case "color":
-                console.log(color)
-                break;
-            case "draw":
-                ref.current?.draw();
-                break;
-            case "erase":
-                ref.current?.erase();
-                break;
-            default:
-                return;
-        }
-    })
+        setState({
+            ...state,
+            drawingEnabled: isEnabled
+        })
+    }
+
+    useEffect(() => {
+        eventOn("onColorModalTrigger", blockCanvas)
+        eventOn("onSetNewColor", handlePenColorChange)
+        eventOn("handleSignatureOperation", ({ eventName, color }: { eventName: string, color: string }): void => {
+
+            console.log('handleSignatureOperation Event');
+            switch (eventName) {
+                case "undo":
+                    ref.current?.undo();
+                    break;
+                case "redo":
+                    ref.current?.redo();
+                    break;
+                case "clear":
+                    ref.current?.clearSignature();
+                    break;
+                case "color":
+                    console.log(color)
+                    break;
+                case "draw":
+                    ref.current?.draw();
+                    break;
+                case "erase":
+                    ref.current?.erase();
+                    break;
+                default:
+                    return;
+            }
+        })
+    }, [])
+
+
 
 
     const imgWidth = Dimensions.get('window').width;
@@ -71,8 +94,12 @@ const DrawCanvas: FC = (props: any) => {
         <View style={{ width: '100%', flexGrow: 1 }}>
 
             {!state.drawingEnabled &&
-                <View style={styleDrawCanvas.canvasBlock}>
-                </View>
+                <Pressable
+                    style={styleDrawCanvas.canvasBlock}
+                    onPressIn={onBlurColorPicker}
+                >
+                    <View />
+                </Pressable>
             }
 
             <SignatureScreen
@@ -81,6 +108,8 @@ const DrawCanvas: FC = (props: any) => {
                 bgWidth={imgWidth}
                 bgHeight={imgHeight}
                 webStyle={style}
+                penColor={state.penColor}
+
             />
         </View >
     )
