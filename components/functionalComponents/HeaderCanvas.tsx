@@ -1,16 +1,19 @@
 import React, { FC } from 'react'
-import { View, Text, Pressable, ToastAndroid, Dimensions } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import { eventEmit } from '../..//utils/eventEmitter'
 import style from '../../styles/screens/styledrawpage'
-import { Camera, CameraType } from 'expo-camera';
 
+interface HeaderCanvasProps {
+    callback: object,
+    hide?: boolean
 
-const HeaderCanvas: FC = (props: any) => {
+}
+const HeaderCanvas: FC<HeaderCanvasProps> = (props) => {
     const handleCallback = (name: string): void => {
         props.callback[name]()
     }
     return (
-        <View style={[style.bar, style.barHeader]}>
+        <View style={[style.bar, style.barHeader, { display: props?.hide ? 'none' : 'flex' }]}>
             <View style={style.barRow}>
                 <View>
                     <Pressable
