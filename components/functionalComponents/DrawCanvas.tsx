@@ -79,7 +79,9 @@ const DrawCanvas: FC = (props: any) => {
             ref.current?.readSignature();
         })
         eventOn("onColorModalTrigger", blockCanvas)
+
         eventOn("onSetNewColor", handlePenColorChange)
+
         eventOn("handleSignatureOperation", ({ eventName, color }: { eventName: string, color: string }): void => {
             console.log('handleSignatureOperation Event');
             switch (eventName) {
