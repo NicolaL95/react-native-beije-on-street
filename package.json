@@ -30,7 +30,9 @@
     "react-native-wheel-color-picker": "^1.2.0",
     "expo-camera": "~12.2.0",
     "expo-image-picker": "~13.1.1",
-    "react-native-view-shot": "3.1.2"
+    "react-native-view-shot": "3.1.2",
+    "expo-media-library": "~14.1.0",
+    "expo-file-system": "~14.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

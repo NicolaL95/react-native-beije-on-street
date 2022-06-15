@@ -6,7 +6,10 @@ import SignatureScreen, {
 import styleDrawCanvas from '../../styles/components/styleDrawCanvas';
 import { colorPalette, fixedDimensions } from '../../styles/globalStyleVariables';
 import { eventEmit, eventOn } from '../../utils/eventEmitter';
-import { captureRef } from 'react-native-view-shot';
+import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system';
+import { CurrentDate } from '../../utils/date';
+
 
 interface State {
     drawingEnabled: boolean,
@@ -22,32 +25,23 @@ const initialState = {
 
 const DrawCanvas: FC = (props: any) => {
 
-    const handleDrawSaveFunc = async (): Promise<void> => {
-        /*     const targetPixelCount = 1080; // If you want full HD pictures
-            const pixelRatio = PixelRatio.get(); // The pixel ratio of the device
-            // pixels * pixelratio = targetPixelCount, so pixels = targetPixelCount / pixelRatio
-            const pixels = targetPixelCount / pixelRatio;
-            const result = await captureRef(ref, {
-                result: 'tmpfile',
-                height: pixels,
-                width: pixels,
-                quality: 0.5,
-                format: 'png',
-            });
-            console.log('result', result) */
-    }
 
-    const handleOK = (signature) => {
-        setState({
-            ...state,
-            image: signature
-        })
-        // Callback from Component props
+    const handleOK = async (signature: string): Promise<void> => {
+
+        //get only base64string
+        const base64Code = signature.split("data:image/png;base64,")[1];
+
+        const filename = FileSystem.documentDirectory + "Sketch_OS" + CurrentDate + ".jpg";
+        //decode and insert base64string
+        await FileSystem.writeAsStringAsync(filename, base64Code, {
+            encoding: FileSystem.EncodingType.Base64,
+        });
+
+        const mediaResult = await MediaLibrary.saveToLibraryAsync(filename);
+
     };
 
-    eventOn("handleDrawSave", () => {
-        ref.current?.readSignature();
-    })
+
 
     const [state, setState] = useState<State>(initialState);
     const ref = useRef<SignatureViewRef>(null)
@@ -81,10 +75,12 @@ const DrawCanvas: FC = (props: any) => {
     }
 
     useEffect(() => {
+        eventOn("handleDrawSave", () => {
+            ref.current?.readSignature();
+        })
         eventOn("onColorModalTrigger", blockCanvas)
         eventOn("onSetNewColor", handlePenColorChange)
         eventOn("handleSignatureOperation", ({ eventName, color }: { eventName: string, color: string }): void => {
-
             console.log('handleSignatureOperation Event');
             switch (eventName) {
                 case "undo":
@@ -136,6 +132,7 @@ const DrawCanvas: FC = (props: any) => {
             <SignatureScreen
                 ref={ref}
                 onOK={handleOK}
+                dataURL={props.imgChoosen !== null ? state.image : undefined}
                 bgSrc={props.imgChoosen !== null ? state.image : ''}
                 bgWidth={imgWidth}
                 bgHeight={imgHeight}
