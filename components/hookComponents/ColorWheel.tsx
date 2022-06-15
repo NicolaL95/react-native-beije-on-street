@@ -8,33 +8,51 @@ import { eventEmit, eventOn } from "../../utils/eventEmitter";
 // import { eventEmit } from "../../utils/eventEmitter";
 
 interface initialState {
-    current: string,
+    current: string
+    prevColors: String[]
     isWheelOpen: boolean
 }
 const initialState = {
     currentColor: colorPalette.primary,
+    prevColors: new Array(),
     isWheelOpen: false,
 }
 
-const ColorWheel: FC = (props) => {
+// let prevColors: Array<String> = []
+
+let colorButton = colorPalette.primary
+
+const ColorWheel: FC = () => {
 
     const [state, setState] = useState(initialState)
 
     const setNewColor = (color: string): void => {
+
         if (color === state.currentColor) {
             return
         }
 
         eventEmit('onSetNewColor', color)
+        colorButton = color
+
+        /* const prevColorsArr = [...state.prevColors]
+
+        if (!(prevColorsArr.length === 0 && color === '#9647ff')) {
+            if (prevColorsArr.length >= 2) {
+                prevColorsArr.pop()
+            }
+
+            prevColorsArr.unshift(color)
+        } */
 
         setState({
             ...state,
-            currentColor: color
+            currentColor: color,
+            // prevColors: prevColorsArr
         })
     }
 
     const handleColorModal = (): void => {
-
         eventEmit('onColorModalTrigger', state.isWheelOpen)
 
         setState({
@@ -44,28 +62,31 @@ const ColorWheel: FC = (props) => {
     }
 
     const onBlurPickerCallback = (drawingEnabled: boolean): void => {
-        setState({ ...state, isWheelOpen: !drawingEnabled })
+        setState({ ...state, isWheelOpen: !drawingEnabled, currentColor: colorButton })
     }
 
     useEffect(() => {
         eventOn("onBlurColorPicker", onBlurPickerCallback)
-    }, [state.currentColor])
+
+        //get colors from storage
+    }, [])
+
 
     return (
         <>
-            <Pressable
-                style={{ position: "relative", zIndex: 999 }}
-                onPress={handleColorModal}
-            >
-
-                <View
-                    style={[
-                        styleColorWheel.colorButton,
-                        { backgroundColor: state.currentColor }
-                    ]}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {/* {state.prevColors.map((color, index) => (<Pressable
+                        key={index}
+                        style={[{ backgroundColor: color }, styleColorWheel.prevColorButton]}
+                    />
+                ))}
+ */}
+                <Pressable
+                    style={[{ position: "relative", zIndex: 999, backgroundColor: state.currentColor }, styleColorWheel.colorButton]}
+                    onPress={handleColorModal}
                 />
+            </View>
 
-            </Pressable>
 
             {state.isWheelOpen &&
                 <View
@@ -73,7 +94,7 @@ const ColorWheel: FC = (props) => {
                 >
 
                     <ColorPicker
-                        palette={['#57ff0a', '#ffde17', '#f26522']}
+                        swatches={false}
                         onColorChangeComplete={setNewColor}
                         gapSize={20}
                         thumbSize={25}

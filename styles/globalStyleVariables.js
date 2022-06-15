@@ -9,5 +9,5 @@ export const fixedDimensions = {
 }
 
 export const colorPalette = {
-    primary: '#9747FF'
+    primary: '#9747ff'
 }

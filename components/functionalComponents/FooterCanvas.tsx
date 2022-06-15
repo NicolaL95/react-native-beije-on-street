@@ -4,18 +4,14 @@ import ColorWheel from '../hookComponents/ColorWheel'
 import { eventEmit } from '../../utils/eventEmitter'
 import style from '../../styles/screens/styledrawpage'
 import { fixedDimensions } from '../../styles/globalStyleVariables'
+import styleFooterCanvas from '../../styles/components/styleFooterCanvas'
+import BrushSizes from './BrushSizes'
 
 interface FooterCanvasProps {
     hide?: boolean
 }
 
 const FooterCanvas: FC<FooterCanvasProps> = (props) => {
-
-    const setBrushWidth = (newBrushWidth: number) => () => {
-        console.log('new brush width: ', newBrushWidth);
-
-        eventEmit('onChangeBrushWidth', newBrushWidth)
-    }
 
     return (
 
@@ -44,46 +40,7 @@ const FooterCanvas: FC<FooterCanvasProps> = (props) => {
             </View>
             <View style={style.barRow}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 20 }}>
-                    <Pressable
-                        style={{ marginHorizontal: 5 }}
-                        onPress={setBrushWidth(fixedDimensions.brushRadius.small)}
-                        hitSlop={20}
-                    >
-                        <View
-                            style={{
-                                width: fixedDimensions.brushRadius.small,
-                                height: fixedDimensions.brushRadius.small,
-                                backgroundColor: 'black',
-                                borderRadius: 50,
-                            }}
-                        />
-                    </Pressable>
-                    <Pressable
-                        style={{ marginHorizontal: 5 }}
-                        onPress={setBrushWidth(fixedDimensions.brushRadius.medium)}
-                    >
-                        <View
-                            style={{
-                                width: fixedDimensions.brushRadius.medium,
-                                height: fixedDimensions.brushRadius.medium,
-                                backgroundColor: 'black',
-                                borderRadius: 50,
-                            }}
-                        />
-                    </Pressable>
-                    <Pressable
-                        style={{ marginHorizontal: 5 }}
-                        onPress={setBrushWidth(fixedDimensions.brushRadius.large)}
-                    >
-                        <View
-                            style={{
-                                width: fixedDimensions.brushRadius.large,
-                                height: fixedDimensions.brushRadius.large,
-                                backgroundColor: 'black',
-                                borderRadius: 50,
-                            }}
-                        />
-                    </Pressable>
+                    <BrushSizes />
                 </View>
                 <View >
                     <ColorWheel />

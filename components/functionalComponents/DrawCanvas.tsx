@@ -63,9 +63,9 @@ const DrawCanvas: FC = (props: any) => {
         })
     }
 
-    const handlePenColorChange = (newColor: string) => { ref.current?.changePenColor(newColor) }
+    const handlePenColorChange = (newColor: string): void => { ref.current?.changePenColor(newColor) }
 
-    const onBlurColorPicker = () => {
+    const onBlurColorPicker = (): void => {
         const isEnabled = true
         //on overlay touch, close colorPicker modal
         eventEmit('onBlurColorPicker', isEnabled)
@@ -76,8 +76,14 @@ const DrawCanvas: FC = (props: any) => {
         })
     }
 
+    const changeBrushWidth = (newBrushWidth: number): void => {
+        ref.current?.changePenSize(newBrushWidth - 5, newBrushWidth)
+    }
+
     useEffect(() => {
-        eventOn("handleDrawSave", () => {
+        eventOn("onChangeBrushWidth", changeBrushWidth)
+
+        eventOn("handleDrawSave", (): void => {
             ref.current?.readSignature();
             (() => {
                 ToastAndroid.show('Foto salvata sul tuo dispositivo!', ToastAndroid.SHORT);
@@ -137,6 +143,7 @@ const DrawCanvas: FC = (props: any) => {
                     <View />
                 </Pressable>
             }
+
             <SignatureScreen
                 ref={ref}
                 onOK={handleOK}
@@ -146,7 +153,8 @@ const DrawCanvas: FC = (props: any) => {
                 bgHeight={imgHeight}
                 webStyle={style}
                 penColor={state.penColor}
-
+                minWidth={fixedDimensions.brushRadius.medium - 5}
+                maxWidth={fixedDimensions.brushRadius.medium}
             />
         </View>
 

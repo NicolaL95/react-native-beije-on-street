@@ -3,8 +3,12 @@ import { View, Text, Pressable, Image } from 'react-native'
 import { eventEmit } from '../..//utils/eventEmitter'
 import style from '../../styles/screens/styledrawpage'
 
+interface callbackProps {
+    handleGalleryComponent: Function,
+    handlePhotoComponent: Function,
+}
 interface HeaderCanvasProps {
-    callback: object,
+    callback: callbackProps,
     hide?: boolean
 
 }
