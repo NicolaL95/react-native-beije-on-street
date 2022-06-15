@@ -80,6 +80,7 @@ const DrawCanvas: FC = (props: any) => {
 
     useEffect(() => {
         eventOn("onChangeBrushWidth", changeBrushWidth)
+
         eventOn("handleDrawSave", (): void => {
             ref.current?.readSignature();
         })
@@ -136,6 +137,7 @@ const DrawCanvas: FC = (props: any) => {
                     <View />
                 </Pressable>
             }
+
             <SignatureScreen
                 ref={ref}
                 onOK={handleOK}
@@ -145,7 +147,8 @@ const DrawCanvas: FC = (props: any) => {
                 bgHeight={imgHeight}
                 webStyle={style}
                 penColor={state.penColor}
-
+                minWidth={fixedDimensions.brushRadius.medium - 5}
+                maxWidth={fixedDimensions.brushRadius.medium}
             />
         </View>
 
