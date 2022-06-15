@@ -1,6 +1,7 @@
 import React, { FC, ReactElement } from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, Image, ImageBackground } from 'react-native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import style from '../../styles/screens/menuPageStyle'
 type RootStackParamList = {
     Tutorial: undefined,
     DrawPage: undefined,
@@ -11,26 +12,23 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 const MenuPage: FC<Props> = ({ navigation }): ReactElement => {
     return (
-        <View>
-            <Text>Sketch onStreet</Text>
-            <View>
-                <Pressable
-                    onPress={() => { navigation.navigate('DrawPage') }}>
-                    <Text>Disegna</Text>
-                </Pressable>
-            </View>
-            <View>
-                <Pressable
-                    onPress={() => { navigation.navigate('Gallery') }}>
-                    <Text>Galleria</Text>
-                </Pressable>
-            </View>
-            <View>
-                <Pressable
-                    onPress={() => { navigation.navigate('Tutorial') }}>
-                    <Text>Tutorial</Text>
-                </Pressable>
-            </View>
+        <View style={{ flex: 1, }}>
+            <ImageBackground source={require('../../assets/background_default.png')}
+                style={style.menu}>
+                <Image style={style.menu_logo} source={require('../../assets/logo_icon.png')} />
+                <View>
+                    <Pressable
+                        onPress={() => { navigation.navigate('DrawPage') }}>
+                        <Image style={style.menu_button} source={require('../../assets/home_buttons/png/sketchnow_home_btn.png')} />
+                    </Pressable>
+                </View>
+                <View>
+                    <Pressable
+                        onPress={() => { navigation.navigate('Tutorial') }}>
+                        <Image style={style.menu_button} source={require('../../assets/home_buttons/png/home_tutorial_home_btn.png')} />
+                    </Pressable>
+                </View>
+            </ImageBackground>
         </View>
     )
 }

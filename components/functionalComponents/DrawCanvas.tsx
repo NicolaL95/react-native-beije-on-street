@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { View, Dimensions, Pressable } from 'react-native'
+import { View, Dimensions, Pressable, ToastAndroid, ImageBackground } from 'react-native'
 import SignatureScreen, {
     SignatureViewRef,
 } from "react-native-signature-canvas";
@@ -23,6 +23,7 @@ const initialState = {
     penColor: colorPalette.primary
 }
 
+const bgImage = require('../../assets/background_default.png')
 const DrawCanvas: FC = (props: any) => {
 
 
@@ -30,7 +31,7 @@ const DrawCanvas: FC = (props: any) => {
 
         //get only base64string
         const base64Code = signature.split("data:image/png;base64,")[1];
-
+        //get location
         const filename = FileSystem.documentDirectory + "Sketch_OS" + CurrentDate + ".jpg";
         //decode and insert base64string
         await FileSystem.writeAsStringAsync(filename, base64Code, {
@@ -47,6 +48,7 @@ const DrawCanvas: FC = (props: any) => {
     const ref = useRef<SignatureViewRef>(null)
 
     useEffect(() => {
+        console.log('props', props.imgChoosen)
         setState({
             ...state,
             image: `data:image/${props.imgChoosen?.extension};base64,${props.imgChoosen?.url}`
@@ -83,6 +85,9 @@ const DrawCanvas: FC = (props: any) => {
 
         eventOn("handleDrawSave", (): void => {
             ref.current?.readSignature();
+            (() => {
+                ToastAndroid.show('Foto salvata sul tuo dispositivo!', ToastAndroid.SHORT);
+            })()
         })
         eventOn("onColorModalTrigger", blockCanvas)
 
@@ -129,6 +134,7 @@ const DrawCanvas: FC = (props: any) => {
     return (
         <View style={{ width: '100%', flexGrow: 1 }}>
 
+
             {!state.drawingEnabled &&
                 <Pressable
                     style={styleDrawCanvas.canvasBlock}
@@ -141,8 +147,8 @@ const DrawCanvas: FC = (props: any) => {
             <SignatureScreen
                 ref={ref}
                 onOK={handleOK}
-                dataURL={props.imgChoosen !== null ? state.image : undefined}
-                bgSrc={props.imgChoosen !== null ? state.image : ''}
+                dataURL={props.imgChoosen !== null ? state.image : bgImage}
+                bgSrc={props.imgChoosen !== null ? state.image : bgImage}
                 bgWidth={imgWidth}
                 bgHeight={imgHeight}
                 webStyle={style}
