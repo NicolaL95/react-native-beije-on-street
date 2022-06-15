@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { View, Dimensions, Pressable } from 'react-native'
+import { View, Dimensions, Pressable, ToastAndroid } from 'react-native'
 import SignatureScreen, {
     SignatureViewRef,
 } from "react-native-signature-canvas";
@@ -30,7 +30,7 @@ const DrawCanvas: FC = (props: any) => {
 
         //get only base64string
         const base64Code = signature.split("data:image/png;base64,")[1];
-
+        //get location
         const filename = FileSystem.documentDirectory + "Sketch_OS" + CurrentDate + ".jpg";
         //decode and insert base64string
         await FileSystem.writeAsStringAsync(filename, base64Code, {
@@ -47,6 +47,7 @@ const DrawCanvas: FC = (props: any) => {
     const ref = useRef<SignatureViewRef>(null)
 
     useEffect(() => {
+        console.log('props', props.imgChoosen)
         setState({
             ...state,
             image: `data:image/${props.imgChoosen?.extension};base64,${props.imgChoosen?.url}`
@@ -77,6 +78,9 @@ const DrawCanvas: FC = (props: any) => {
     useEffect(() => {
         eventOn("handleDrawSave", () => {
             ref.current?.readSignature();
+            (() => {
+                ToastAndroid.show('Foto salvata sul tuo dispositivo!', ToastAndroid.SHORT);
+            })()
         })
         eventOn("onColorModalTrigger", blockCanvas)
 
@@ -135,7 +139,7 @@ const DrawCanvas: FC = (props: any) => {
                 ref={ref}
                 onOK={handleOK}
                 dataURL={props.imgChoosen !== null ? state.image : undefined}
-                bgSrc={props.imgChoosen !== null ? state.image : ''}
+                bgSrc={props.imgChoosen !== null ? state.image : undefined}
                 bgWidth={imgWidth}
                 bgHeight={imgHeight}
                 webStyle={style}

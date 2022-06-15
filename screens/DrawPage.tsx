@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { View, Text, Dimensions, Pressable } from 'react-native'
+import { View, Text, Dimensions, Pressable, ToastAndroid } from 'react-native'
 import DrawCanvas from '../components/functionalComponents/DrawCanvas'
 import HeaderCanvas from '../components/functionalComponents/HeaderCanvas'
 import FooterCanvas from '../components/functionalComponents/FooterCanvas'
@@ -82,10 +82,19 @@ const DrawPage: FC = () => {
     const handlePictureTaked = async (): Promise<void> => {
         const options: object = {
             quality: 0.5,
-            // base64: true,
+            base64: true,
         }
-        const photo: CameraCapturedPicture | undefined = await camera?.takePictureAsync(options);
+        const photo: CameraCapturedPicture = await camera?.takePictureAsync(options);
+
         console.log('photo', photo)
+        setState({
+            ...state,
+            cameraIsActive: !state.cameraIsActive,
+            resultImgPicker: {
+                url: photo.base64,
+                extension: getExtensionFromUrl(photo.uri)
+            }
+        })
     }
 
     return (
