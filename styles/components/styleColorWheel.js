@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { fixedDimensions } from "../globalStyleVariables";
 
 export default StyleSheet.create({
     modalContainer: {
@@ -11,9 +12,9 @@ export default StyleSheet.create({
         padding: 10
     },
     colorButton: {
-        width: 40,
-        height: 40,
-        borderWidth: 4,
+        width: 40 + fixedDimensions.selectedBorderWidth,
+        height: 40 + fixedDimensions.selectedBorderWidth,
+        borderWidth: fixedDimensions.selectedBorderWidth,
         borderColor: 'rgba(255,255,255, 0.5)',
         borderRadius: 50,
     }

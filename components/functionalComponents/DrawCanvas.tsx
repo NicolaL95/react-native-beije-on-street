@@ -37,7 +37,7 @@ const DrawCanvas: FC = (props: any) => {
             console.log('result', result) */
     }
 
-    const handleOK = (signature) => {
+    const handleOK = (signature: string) => {
         setState({
             ...state,
             image: signature

@@ -22,7 +22,8 @@ const style = StyleSheet.create({
     },
     barRow: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 })
 

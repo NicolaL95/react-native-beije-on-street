@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Dimensions, Pressable, Text, View } from "react-native";
 
 import ColorPicker from "react-native-wheel-color-picker";
-import styleColorWheelModal from "../../styles/components/styleColorWheelModal";
+import styleColorWheel from "../../styles/components/styleColorWheel";
 import { colorPalette } from "../../styles/globalStyleVariables";
 import { eventEmit, eventOn } from "../../utils/eventEmitter";
 // import { eventEmit } from "../../utils/eventEmitter";
@@ -16,7 +16,7 @@ const initialState = {
     isWheelOpen: false,
 }
 
-const ColorWheelModal: FC = (props) => {
+const ColorWheel: FC = (props) => {
 
     const [state, setState] = useState(initialState)
 
@@ -60,7 +60,7 @@ const ColorWheelModal: FC = (props) => {
 
                 <View
                     style={[
-                        styleColorWheelModal.colorButton,
+                        styleColorWheel.colorButton,
                         { backgroundColor: state.currentColor }
                     ]}
                 />
@@ -69,7 +69,7 @@ const ColorWheelModal: FC = (props) => {
 
             {state.isWheelOpen &&
                 <View
-                    style={styleColorWheelModal.modalContainer}
+                    style={styleColorWheel.modalContainer}
                 >
 
                     <ColorPicker
@@ -86,4 +86,4 @@ const ColorWheelModal: FC = (props) => {
     )
 }
 
-export default ColorWheelModal
+export default ColorWheel

@@ -86,57 +86,67 @@ const DrawPage: FC = () => {
     return (
         <View style={{ flex: 1 }}>
             {/* Camera View Container */}
-            {state.cameraIsActive && <View style={{ width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }}>
-                <View>
+            {state.cameraIsActive &&
+
+                <View style={{ width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }}>
                     <View>
-                        <Pressable
-                            onPress={() => {
-                                setState({
-                                    ...state,
-                                    cameraIsActive: false
-                                })
-                            }}>
-                            <Text>Chiudi</Text>
-                        </Pressable>
+                        <View>
+                            <Pressable
+                                onPress={() => {
+                                    setState({
+                                        ...state,
+                                        cameraIsActive: false
+                                    })
+                                }}>
+                                <Text>Chiudi</Text>
+                            </Pressable>
+                        </View>
+                        <View>
+                            <Pressable
+                                onPress={handlePictureTaked}>
+                                <Text>scatta foto</Text>
+                            </Pressable>
+                        </View>
+                        <View>
+                            <Pressable
+                                onPress={() => {
+                                    setState({
+                                        ...state,
+                                        type: CameraType.back ? CameraType.front : CameraType.back
+                                    })
+                                }}>
+                                <Text>flip</Text>
+                            </Pressable>
+                        </View>
                     </View>
-                    <View>
-                        <Pressable
-                            onPress={handlePictureTaked}>
-                            <Text>scatta foto</Text>
-                        </Pressable>
-                    </View>
-                    <View>
-                        <Pressable
-                            onPress={() => {
-                                setState({
-                                    ...state,
-                                    type: CameraType.back ? CameraType.front : CameraType.back
-                                })
-                            }}>
-                            <Text>flip</Text>
-                        </Pressable>
-                    </View>
+                    <Camera
+                        ref={(ref) => {
+                            camera = ref
+                        }}
+                        style={{ width: '100%', height: '100%' }} type={state.type}>
+                    </Camera>
                 </View>
-                <Camera
-                    ref={(ref) => {
-                        camera = ref
-                    }}
-                    style={{ width: '100%', height: '100%' }} type={state.type}>
-                </Camera>
-            </View>}
-            {state.galleryIsActive && state.resultImgPicker && <View style={{ width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }}>
-                <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-            </View>}
+            }
+            {
+                state.galleryIsActive && state.resultImgPicker &&
+                <View style={{ width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }}>
+                    <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+                </View>
+            }
+
             <HeaderCanvas
                 callback={{
                     handlePhotoComponent,
                     handleGalleryComponent
                 }}
+                hide={state.cameraIsActive || state.galleryIsActive}
             />
             <DrawCanvas
                 imgChoosen={state.resultImgPicker}
             />
-            <FooterCanvas />
+            <FooterCanvas
+                hide={state.cameraIsActive || state.galleryIsActive} />
+
         </View>
     )
 }
