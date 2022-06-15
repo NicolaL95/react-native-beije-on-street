@@ -1,25 +1,60 @@
-import React, { FC, useRef, useState } from 'react'
-import { View, Dimensions } from 'react-native'
+import React, { FC, ReactElement, useEffect, useRef, useState } from 'react'
+import { View, Dimensions, Image, PixelRatio } from 'react-native'
 import SignatureScreen, {
     SignatureViewRef,
 } from "react-native-signature-canvas";
 import styleDrawCanvas from '../../styles/components/styleDrawCanvas';
 import { fixedDimensions } from '../../styles/globalStyleVariables';
 import { eventOn } from '../../utils/eventEmitter';
+import { captureRef } from 'react-native-view-shot';
 
 interface State {
-    drawingEnabled: boolean
+    drawingEnabled: boolean,
+    image: string
 }
 
 const initialState = {
-    drawingEnabled: true
+    drawingEnabled: true,
+    image: ''
 }
 
 const DrawCanvas: FC = (props: any) => {
+    const handleDrawSaveFunc = async (): Promise<void> => {
+        /*     const targetPixelCount = 1080; // If you want full HD pictures
+            const pixelRatio = PixelRatio.get(); // The pixel ratio of the device
+            // pixels * pixelratio = targetPixelCount, so pixels = targetPixelCount / pixelRatio
+            const pixels = targetPixelCount / pixelRatio;
+            const result = await captureRef(ref, {
+                result: 'tmpfile',
+                height: pixels,
+                width: pixels,
+                quality: 0.5,
+                format: 'png',
+            });
+            console.log('result', result) */
+    }
+
+    const handleOK = (signature) => {
+        setState({
+            ...state,
+            image: signature
+        })
+        // Callback from Component props
+    };
+
+    eventOn("handleDrawSave", () => {
+        ref.current?.readSignature();
+    })
 
     const [state, setState] = useState<State>(initialState);
-
     const ref = useRef<SignatureViewRef>(null)
+
+    useEffect(() => {
+        setState({
+            ...state,
+            image: `data:image/${props.imgChoosen?.extension};base64,${props.imgChoosen?.url}`
+        })
+    }, [props.imgChoosen])
 
     const disableCanvas = (isEnabled: boolean): void => {
         setState({
@@ -32,7 +67,7 @@ const DrawCanvas: FC = (props: any) => {
     eventOn("onHandleCanvas", disableCanvas)
 
     eventOn("handleSignatureOperation", ({ eventName, color }: { eventName: string, color: string }): void => {
-
+        console.log('evento')
         switch (eventName) {
             case "undo":
                 ref.current?.undo();
@@ -74,15 +109,16 @@ const DrawCanvas: FC = (props: any) => {
                 <View style={styleDrawCanvas.canvasBlock}>
                 </View>
             }
-
             <SignatureScreen
                 ref={ref}
-                bgSrc="https://via.placeholder.com/300x200/ff726b"
+                onOK={handleOK}
+                bgSrc={props.imgChoosen !== null ? state.image : ''}
                 bgWidth={imgWidth}
                 bgHeight={imgHeight}
                 webStyle={style}
             />
-        </View >
+        </View>
+
     )
 }
 

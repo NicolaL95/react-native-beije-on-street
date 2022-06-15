@@ -37,6 +37,7 @@ const HeaderCanvas: FC = (props: any) => {
                                 eventName: "undo"
                             })
                         }}>
+
                         <Text>Undo</Text>
                     </Pressable>
                 </View>
@@ -62,7 +63,10 @@ const HeaderCanvas: FC = (props: any) => {
                     </Pressable>
                 </View>
                 <View>
-                    <Pressable>
+                    <Pressable
+                        onPress={() => {
+                            eventEmit("handleDrawSave")
+                        }}>
                         <Text>Confirm</Text>
                     </Pressable>
                 </View>
