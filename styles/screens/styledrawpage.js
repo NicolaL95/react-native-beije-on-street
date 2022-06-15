@@ -24,6 +24,10 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    drawTable_icon: {
+        height: 42,
+        width: 42
     }
 })
 

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { View, Dimensions, Pressable, ToastAndroid } from 'react-native'
+import { View, Dimensions, Pressable, ToastAndroid, ImageBackground } from 'react-native'
 import SignatureScreen, {
     SignatureViewRef,
 } from "react-native-signature-canvas";
@@ -23,6 +23,7 @@ const initialState = {
     penColor: colorPalette.primary
 }
 
+const bgImage = require('../../assets/background_default.png')
 const DrawCanvas: FC = (props: any) => {
 
 
@@ -127,6 +128,7 @@ const DrawCanvas: FC = (props: any) => {
     return (
         <View style={{ width: '100%', flexGrow: 1 }}>
 
+
             {!state.drawingEnabled &&
                 <Pressable
                     style={styleDrawCanvas.canvasBlock}
@@ -138,8 +140,8 @@ const DrawCanvas: FC = (props: any) => {
             <SignatureScreen
                 ref={ref}
                 onOK={handleOK}
-                dataURL={props.imgChoosen !== null ? state.image : undefined}
-                bgSrc={props.imgChoosen !== null ? state.image : undefined}
+                dataURL={props.imgChoosen !== null ? state.image : bgImage}
+                bgSrc={props.imgChoosen !== null ? state.image : bgImage}
                 bgWidth={imgWidth}
                 bgHeight={imgHeight}
                 webStyle={style}

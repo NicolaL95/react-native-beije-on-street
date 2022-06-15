@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, Image } from 'react-native'
 import { eventEmit } from '../..//utils/eventEmitter'
 import style from '../../styles/screens/styledrawpage'
 
@@ -20,7 +20,7 @@ const HeaderCanvas: FC<HeaderCanvasProps> = (props) => {
                         onPress={() => {
                             handleCallback('handleGalleryComponent')
                         }}>
-                        <Text>Gallery</Text>
+                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/gallery.png')} />
                     </Pressable>
                 </View>
                 <View>
@@ -28,7 +28,7 @@ const HeaderCanvas: FC<HeaderCanvasProps> = (props) => {
                         onPress={() => {
                             handleCallback('handlePhotoComponent')
                         }}>
-                        <Text>Fotocamera</Text>
+                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/camera.png')} />
                     </Pressable>
                 </View>
             </View>
@@ -41,7 +41,7 @@ const HeaderCanvas: FC<HeaderCanvasProps> = (props) => {
                             })
                         }}>
 
-                        <Text>Undo</Text>
+                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/undo_redo.png')} />
                     </Pressable>
                 </View>
                 <View>
@@ -52,7 +52,7 @@ const HeaderCanvas: FC<HeaderCanvasProps> = (props) => {
                             })
                         }}
                     >
-                        <Text>Redo</Text>
+                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/undo_redo.png')} />
                     </Pressable>
                 </View>
                 <View>
@@ -62,7 +62,7 @@ const HeaderCanvas: FC<HeaderCanvasProps> = (props) => {
                                 eventName: "clear"
                             })
                         }}>
-                        <Text>Clear</Text>
+                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/clear.png')} />
                     </Pressable>
                 </View>
                 <View>
@@ -70,7 +70,7 @@ const HeaderCanvas: FC<HeaderCanvasProps> = (props) => {
                         onPress={() => {
                             eventEmit("handleDrawSave")
                         }}>
-                        <Text>Confirm</Text>
+                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/check_complete.png')} />
                     </Pressable>
                 </View>
             </View>
