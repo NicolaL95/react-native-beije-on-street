@@ -26,7 +26,6 @@ const initialState = {
 const bgImage = require('../../assets/background_default.png')
 const DrawCanvas: FC = (props: any) => {
 
-
     const handleOK = async (signature: string): Promise<void> => {
 
         //get only base64string

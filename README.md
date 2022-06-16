@@ -19,6 +19,7 @@ npm install --save react-native-signature-canvas
 
 <!-- Color picker -->
 npm install --save react-native-wheel-color-picker
+
 <!-- EVENT -->
 npm install events
 
@@ -30,3 +31,9 @@ expo install react-native-view-shot
 
 <!-- MEDIA LIBRARY -->
 expo install expo-media-library
+
+<!-- PAGER VIEW -->
+expo install react-native-pager-view
+
+<!-- ASYNC STORAGE -->
+expo install @react-native-async-storage/async-storage

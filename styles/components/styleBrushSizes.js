@@ -1,6 +1,7 @@
+
 import { StyleSheet } from "react-native";
 import { hexToRGB } from "../../utils/color";
-import { colorPalette, fixedDimensions } from "../globalStyleVariables";
+import { colorPalette } from "../globalStyleVariables";
 
 export default StyleSheet.create({
     brushWidthBtn: {

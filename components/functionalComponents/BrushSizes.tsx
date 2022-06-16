@@ -70,23 +70,19 @@ const BrushSizes: FC = () => {
 
     return (<>
         {
-            state.brushesArr.map((brush, index) => {
-                console.log('render brush n. ', index);
-                console.log('brush info ', brush);
-
-                return <Pressable
-                    key={`size_${index}`}
-                    style={[
-                        styleBrushSizes.brushWidthBtn,
-                        brush.style,
-                        {
-                            borderWidth: brush.selected ? 1 / brush.size + 1.5 : 0,
-                        }
-                    ]}
-                    onPress={setBrushWidth(brush)}
-                    hitSlop={brush.id === 0 ? 50 : null}
-                />
-            })
+            state.brushesArr.map((brush, index) => (<Pressable
+                key={`size_${index}`}
+                style={[
+                    styleBrushSizes.brushWidthBtn,
+                    brush.style,
+                    {
+                        borderWidth: brush.selected ? 1 / brush.size + 2 : 0,
+                    }
+                ]}
+                onPress={setBrushWidth(brush)}
+                hitSlop={brush.id === 0 ? 50 : null}
+            />
+            ))
         }
     </>
     )
