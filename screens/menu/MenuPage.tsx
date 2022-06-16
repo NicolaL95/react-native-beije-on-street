@@ -1,7 +1,9 @@
-import React, { FC, ReactElement } from 'react'
+import React, { FC, ReactElement, useEffect } from 'react'
 import { View, Text, Pressable, Image, ImageBackground } from 'react-native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import style from '../../styles/screens/menuPageStyle'
+import { Asset, useAssets } from 'expo-asset';
+
 type RootStackParamList = {
     Tutorial: undefined,
     DrawPage: undefined,
@@ -11,6 +13,8 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const MenuPage: FC<Props> = ({ navigation }): ReactElement => {
+
+
     return (
         <View style={{ flex: 1, }}>
             <ImageBackground source={require('../../assets/background_default.png')}

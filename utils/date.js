@@ -1,5 +1,7 @@
 const CurrentDate = () => {
-    return new Date(year, month, day, hours, minutes, seconds, milliseconds);
+    const date = Date.now();
+    console.log(date)
+    return date;
 
 }
 

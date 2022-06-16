@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { View, Dimensions, Pressable, ToastAndroid, ImageBackground } from 'react-native'
+import { View, Dimensions, Pressable, ToastAndroid, Image } from 'react-native'
 import SignatureScreen, {
     SignatureViewRef,
 } from "react-native-signature-canvas";
@@ -9,8 +9,8 @@ import { eventEmit, eventOn } from '../../utils/eventEmitter';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
 import { CurrentDate } from '../../utils/date';
-
-
+import { Asset, useAssets } from 'expo-asset';
+import RNFS, { DocumentDirectoryPath } from 'react-native-fs';
 interface State {
     drawingEnabled: boolean,
     image: string,
@@ -25,18 +25,21 @@ const initialState = {
 
 const bgImage = require('../../assets/background_default.png')
 const DrawCanvas: FC = (props: any) => {
-
+    console.log('propes', props)
 
     const handleOK = async (signature: string): Promise<void> => {
 
+        /* const base64 = await FileSystem.readAsStringAsync(assets[0].localUri, { encoding: 'base64' });
+        console.log(base64) */
         //get only base64string
         const base64Code = signature.split("data:image/png;base64,")[1];
         //get location
-        const filename = FileSystem.documentDirectory + "Sketch_OS" + CurrentDate + ".jpg";
+        const filename = FileSystem.documentDirectory + "Sketch_OS" + CurrentDate() + ".jpg";
         //decode and insert base64string
-        await FileSystem.writeAsStringAsync(filename, base64Code, {
+        await FileSystem.writeAsStringAsync(filename, props.imgChoosen !== null ? base64Code : base64Code, {
             encoding: FileSystem.EncodingType.Base64,
         });
+
 
         const mediaResult = await MediaLibrary.saveToLibraryAsync(filename);
 
@@ -125,11 +128,13 @@ const DrawCanvas: FC = (props: any) => {
     const imgWidth = Dimensions.get('window').width;
     const imgHeight = Dimensions.get('window').height;
 
-    const style = `.m-signature-pad { box-shadow: none; border: none; } 
+    const style = `.m-signature-pad { box-shadow: none; border: none; 
+     background-image: url(${bgImage});} 
               .m-signature-pad--body {border: none;}
               .m-signature-pad--footer {display: none; margin: 0px;}
               body,html {
-              width: 100%; height: 100%}`;
+              width: 100%; height: 100%;
+            }`;
 
     return (
         <View style={{ width: '100%', flexGrow: 1 }}>
@@ -147,8 +152,8 @@ const DrawCanvas: FC = (props: any) => {
             <SignatureScreen
                 ref={ref}
                 onOK={handleOK}
-                dataURL={props.imgChoosen !== null ? state.image : bgImage}
-                bgSrc={props.imgChoosen !== null ? state.image : bgImage}
+                dataURL={props.imgChoosen !== null ? state.image : props.defaultbg}
+                bgSrc={props.imgChoosen !== null ? state.image : props.defaultbg}
                 bgWidth={imgWidth}
                 bgHeight={imgHeight}
                 webStyle={style}
