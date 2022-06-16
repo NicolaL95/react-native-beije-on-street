@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { View, Text, Dimensions, Pressable, ToastAndroid } from 'react-native'
 import DrawCanvas from '../components/functionalComponents/DrawCanvas'
 import HeaderCanvas from '../components/functionalComponents/HeaderCanvas'
@@ -6,7 +6,9 @@ import FooterCanvas from '../components/functionalComponents/FooterCanvas'
 import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { getExtensionFromUrl } from '../utils/functionDrawTable'
-
+import * as FileSystem from 'expo-file-system';
+import { CurrentDate } from '../../utils/date';
+import { Asset, useAssets } from 'expo-asset';
 
 interface Result {
     url: string | undefined,
@@ -20,7 +22,7 @@ interface State {
     galleryIsActive: boolean,
     type: CameraType,
     resultImgPicker: Result | null
-
+    bgImage64: string | undefined
 }
 
 const initialState: State = {
@@ -29,13 +31,36 @@ const initialState: State = {
     cameraIsActive: false,
     galleryIsActive: false,
     type: CameraType.back,
-    resultImgPicker: null
+    resultImgPicker: null,
+    bgImage64: undefined
 }
 
 
 const DrawPage: FC = () => {
+    const bgImage = require('../assets/background_default.png')
     let camera: Camera | null;
     const [state, setState] = useState<State>(initialState);
+
+    const [assets, error] = useAssets(require('../assets/background_default.png'));
+
+
+
+    const handleDefaultImage = async (): Promise<void> => {
+
+        let bgImage64tmp = await FileSystem.readAsStringAsync(assets[0].localUri, { encoding: 'base64' })
+        bgImage64tmp = `data:image/jpeg;base64,${bgImage64tmp}`
+        setState({
+            ...state,
+            bgImage64: bgImage64tmp
+        })
+    }
+
+    useEffect(() => {
+        if (assets !== undefined) {
+            handleDefaultImage();
+        }
+    }, [assets])
+
     const handlePhotoComponent = async (): Promise<void> => {
 
         const { status } = await Camera.requestCameraPermissionsAsync();
@@ -157,6 +182,7 @@ const DrawPage: FC = () => {
             />
             <DrawCanvas
                 imgChoosen={state.resultImgPicker}
+                defaultbg={state.bgImage64}
             />
             <FooterCanvas
                 hide={state.cameraIsActive || state.galleryIsActive} />
