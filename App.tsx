@@ -1,13 +1,13 @@
-import React, { FC } from 'react'
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { FC, } from 'react'
+import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Routing from './Routing';
 
 const App: FC = () => {
-  return (
-    <View style={{ flex: 1 }}>
-      <Routing></Routing>
-    </View>
-  );
+    return (
+        <SafeAreaView style={{ flex: 1 }}>
+            <Routing></Routing>
+        </SafeAreaView>
+    );
 }
 export default App;

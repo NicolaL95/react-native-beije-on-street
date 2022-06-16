@@ -1,11 +1,14 @@
 import React, { FC, useState } from 'react'
-import { View, Text, Dimensions, Pressable, ToastAndroid } from 'react-native'
+import { View, Text, Dimensions, Pressable, Image } from 'react-native'
 import DrawCanvas from '../components/functionalComponents/DrawCanvas'
 import HeaderCanvas from '../components/functionalComponents/HeaderCanvas'
 import FooterCanvas from '../components/functionalComponents/FooterCanvas'
 import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { getExtensionFromUrl } from '../utils/functionDrawTable'
+import styleDrawCanvas from '../styles/components/styleDrawCanvas'
+import style from '../styles/screens/styledrawpage'
+import styleColorWheel from '../styles/components/styleColorWheel'
 
 
 interface Result {
@@ -103,46 +106,51 @@ const DrawPage: FC = () => {
             {state.cameraIsActive &&
 
                 <View style={{ width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }}>
-                    <View>
-                        <View>
-                            <Pressable
-                                onPress={() => {
-                                    setState({
-                                        ...state,
-                                        cameraIsActive: false
-                                    })
-                                }}>
-                                <Text>Chiudi</Text>
-                            </Pressable>
-                        </View>
-                        <View>
-                            <Pressable
-                                onPress={handlePictureTaked}>
-                                <Text>scatta foto</Text>
-                            </Pressable>
-                        </View>
-                        <View>
-                            <Pressable
-                                onPress={() => {
-                                    setState({
-                                        ...state,
-                                        type: CameraType.back ? CameraType.front : CameraType.back
-                                    })
-                                }}>
-                                <Text>flip</Text>
-                            </Pressable>
-                        </View>
-                    </View>
+
                     <Camera
                         ref={(ref) => {
                             camera = ref
                         }}
-                        style={{ width: '100%', height: '100%' }} type={state.type}>
+                        style={{ width: '100%', height: '100%' }}
+                        type={state.type}>
                     </Camera>
-                </View>
+
+                    <View style={styleDrawCanvas.cameraOverlay}>
+                        <Pressable
+                            onPress={() => {
+                                setState({
+                                    ...state,
+                                    cameraIsActive: false
+                                })
+                            }}>
+
+                            <Image
+                                style={{ height: 60, width: 60 }}
+                                source={require('../assets/icons/png/clear.png')}
+                            />
+
+                        </Pressable>
+                        <Pressable
+                            onPress={handlePictureTaked}
+                            style={[styleColorWheel.colorButton, { height: 100, width: 100, borderWidth: 10 }]} />
+                        <Pressable
+                            onPress={() => {
+                                setState({
+                                    ...state,
+                                    type: CameraType.back ? CameraType.front : CameraType.back
+                                })
+                            }}>
+                            <Image
+                                style={{ height: 60, width: 60 }}
+                                source={require('../assets/icons/png/camera_flip.png')}
+                            />
+                        </Pressable>
+                    </View>
+                </View >
             }
             {
                 state.galleryIsActive && state.resultImgPicker &&
+
                 <View style={{ width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }}>
                     <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
                 </View>
@@ -161,7 +169,7 @@ const DrawPage: FC = () => {
             <FooterCanvas
                 hide={state.cameraIsActive || state.galleryIsActive} />
 
-        </View>
+        </View >
     )
 }
 export default DrawPage

@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { FC, useEffect, useState } from 'react'
+import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 //screens
 import MenuPage from './screens/menu/MenuPage';
@@ -14,41 +14,40 @@ type RootStackParamList = {
     Gallery: undefined,
 }
 
+const navigatorOptions: StackNavigationOptions = {
+    // headerMode: 'screen'
+    headerShown: false,
+}
 const Routing: FC = () => {
 
     const Stack = createStackNavigator<RootStackParamList>();
 
     return (
         <NavigationContainer>
+
             <Stack.Navigator
                 initialRouteName={'Menu'}
             >
+
                 <Stack.Screen
                     name="Menu"
-                    options={{
-                        headerTitleAlign: 'center'
-                    }}
+                    options={navigatorOptions}
                     component={MenuPage}
                 />
+
                 <Stack.Screen
                     name="DrawPage"
-                    options={{
-                        headerTitleAlign: 'center'
-                    }}
+                    options={navigatorOptions}
                     component={DrawPage}
                 />
                 <Stack.Screen
                     name="Gallery"
-                    options={{
-                        headerTitleAlign: 'center'
-                    }}
+                    options={navigatorOptions}
                     component={Gallery}
                 />
                 <Stack.Screen
                     name="Tutorial"
-                    options={{
-                        headerTitleAlign: 'center'
-                    }}
+                    options={navigatorOptions}
                     component={Tutorial}
                 />
 

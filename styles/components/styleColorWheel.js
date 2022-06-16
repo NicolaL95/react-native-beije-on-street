@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
-import { fixedDimensions } from "../globalStyleVariables";
+import { hexToRGB } from "../../utils/color";
+import { colorPalette, fixedDimensions } from "../globalStyleVariables";
 
 export default StyleSheet.create({
     modalContainer: {
@@ -10,13 +11,13 @@ export default StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         borderWidth: 2,
-        borderColor: 'rgba(0,0,0, 0.05)'
+        borderColor: hexToRGB('#000', 0.5)
     },
     colorButton: {
         width: 40 + fixedDimensions.selectedBorderWidth,
         height: 40 + fixedDimensions.selectedBorderWidth,
         borderWidth: fixedDimensions.selectedBorderWidth,
-        borderColor: 'rgba(255,255,255, 0.5)',
+        borderColor: hexToRGB(colorPalette.primary, 0.5),
         borderRadius: 50,
     },
     prevColorButton: {
