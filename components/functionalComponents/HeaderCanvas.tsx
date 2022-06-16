@@ -56,7 +56,7 @@ const HeaderCanvas: FC<HeaderCanvasProps> = (props) => {
                             })
                         }}
                     >
-                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/undo_redo.png')} />
+                        <Image style={style.drawTable_icon_reverse} source={require('../../assets/icons/png/undo_redo.png')} />
                     </Pressable>
                 </View>
                 <View>

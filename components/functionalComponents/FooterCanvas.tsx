@@ -1,12 +1,11 @@
 import React, { FC } from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text, Pressable, Image } from 'react-native'
 import ColorWheel from '../hookComponents/ColorWheel'
 import { eventEmit } from '../../utils/eventEmitter'
 import style from '../../styles/screens/styledrawpage'
 import { fixedDimensions } from '../../styles/globalStyleVariables'
 import styleFooterCanvas from '../../styles/components/styleFooterCanvas'
 import BrushSizes from './BrushSizes'
-
 interface FooterCanvasProps {
     hide?: boolean
 }
@@ -24,7 +23,7 @@ const FooterCanvas: FC<FooterCanvasProps> = (props) => {
                                 eventName: "draw"
                             })
                         }}>
-                        <Text>Spray</Text>
+                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/spraycan.png')} />
                     </Pressable>
                 </View>
                 <View>
@@ -34,7 +33,7 @@ const FooterCanvas: FC<FooterCanvasProps> = (props) => {
                                 eventName: "erase"
                             })
                         }}>
-                        <Text>Erase</Text>
+                        <Image style={style.drawTable_icon} source={require('../../assets/icons/png/eraser.png')} />
                     </Pressable>
                 </View>
             </View>

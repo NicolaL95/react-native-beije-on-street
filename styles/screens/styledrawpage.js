@@ -27,7 +27,13 @@ const style = StyleSheet.create({
     },
     drawTable_icon: {
         height: 42,
-        width: 42
+        width: 42,
+    }
+    ,
+    drawTable_icon_reverse: {
+        height: 42,
+        width: 42,
+        transform: [{ scaleX: -1 }]
     }
 })
 
