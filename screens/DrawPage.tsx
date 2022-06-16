@@ -7,7 +7,6 @@ import { Camera, CameraType, CameraCapturedPicture } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { getExtensionFromUrl } from '../utils/functionDrawTable'
 import * as FileSystem from 'expo-file-system';
-import { CurrentDate } from '../../utils/date';
 import { Asset, useAssets } from 'expo-asset';
 
 interface Result {
@@ -37,7 +36,7 @@ const initialState: State = {
 
 
 const DrawPage: FC = () => {
-    const bgImage = require('../assets/background_default.png')
+
     let camera: Camera | null;
     const [state, setState] = useState<State>(initialState);
 
@@ -180,10 +179,12 @@ const DrawPage: FC = () => {
                 }}
                 hide={state.cameraIsActive || state.galleryIsActive}
             />
-            <DrawCanvas
-                imgChoosen={state.resultImgPicker}
-                defaultbg={state.bgImage64}
-            />
+            {state.bgImage64 !== undefined &&
+                <DrawCanvas
+                    imgChoosen={state.resultImgPicker}
+                    defaultbg={state.bgImage64}
+                />
+            }
             <FooterCanvas
                 hide={state.cameraIsActive || state.galleryIsActive} />
 
